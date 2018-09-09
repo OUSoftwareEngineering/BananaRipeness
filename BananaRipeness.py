@@ -53,7 +53,7 @@ def banana():
     hue = 0;
 
     theMax = max(R, G, B)
-    theMin = min(R,G,B)
+    theMin = min(R, G, B)
 
     maxMin = theMax - theMin
 
