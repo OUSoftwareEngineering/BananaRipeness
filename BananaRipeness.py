@@ -2,7 +2,6 @@ def banana():
     # [START vision_quickstart]
     import io
     import os
-    import webcolors
 
     # Imports the Google Cloud client library
     # [START vision_python_migration_import]
@@ -41,9 +40,9 @@ def banana():
     mostColor = "N/A"
 
     for color in props.dominant_colors.colors:
-        x = format(color.pixel_fraction)
+        x = color.pixel_fraction
 
-        if x > colorMax:
+        if (x > colorMax):
             colorMax = x
             mostColor = color.color
 
@@ -71,13 +70,11 @@ def banana():
         if hue < 0:
             hue = hue + 360
 
-    print hue
-
+    print(hue)
 
     print("TESTING THIS: " + str(mostColor.red))
     print("TESTING THIS: " + str(mostColor.green))
     print("TESTING THIS: " + str(mostColor.blue))
-    print webcolors.rgb_to_name((str(mostColor.red), str(mostColor.green), str(mostColor.blue)))
 
 if __name__ == '__main__':
     banana()
