@@ -2,6 +2,7 @@ def banana():
     # [START vision_quickstart]
     import io
     import os
+    import colorsys
 
     # Imports the Google Cloud client library
     # [START vision_python_migration_import]
@@ -24,17 +25,17 @@ def banana():
     image = types.Image(content=content)
 
     # Performs label detection on the image file
-    response = client.label_detection(image=image)
-    labels = response.label_annotations
+    #response = client.label_detection(image=image)
+    #labels = response.label_annotations
 
-    print('Labels:')
-    for label in labels:
-        print(label.description)
+    #print('Labels:')
+    #for label in labels:
+    #    print(label.description)
     # [END vision_quickstart]
 
     response = client.image_properties(image=image)
     props = response.image_properties_annotation
-    print('Properties:')
+    #print('Properties:')
 
     colorMax = 0
     mostColor = "N/A"
@@ -42,39 +43,27 @@ def banana():
     for color in props.dominant_colors.colors:
         x = color.pixel_fraction
 
-        if (x > colorMax):
+        if color.color.red > 230 and color.color.green > 230 and color.color.blue > 230:
+            pass
+        elif x > colorMax:
             colorMax = x
             mostColor = color.color
 
-    R = mostColor.red / 255
-    G = mostColor.green / 255
-    B = mostColor.blue / 255
+    R = mostColor.red
+    G = mostColor.green
+    B = mostColor.blue
 
-    hue = 0;
+    hsv = colorsys.rgb_to_hsv(R, G, B)
 
-    theMax = max(R, G, B)
-    theMin = min(R, G, B)
+    hue = hsv[0] * 360
+    value = hsv[2]
 
-    maxMin = theMax - theMin
-
-    if maxMin > 0:
-        if theMax == R:
-            hue = (G-B)/(theMax-theMin)
-        if theMax == G:
-            hue = 2.0 + (B-R)/(theMax-theMin)
-        if theMax == B:
-            hue = 4.0 + (R-G)/(theMax-theMin)
-
-        hue = hue * 60
-
-        if hue < 0:
-            hue = hue + 360
-
-    print(hue)
-
-    print("TESTING THIS: " + str(mostColor.red))
-    print("TESTING THIS: " + str(mostColor.green))
-    print("TESTING THIS: " + str(mostColor.blue))
+    if hue > 0 and hue < 65 and value > 65:
+        print("The banana(s) is(are) ripe.")
+    elif hue > 65 and hue < 110 and value > 65:
+        print("The banana(s) is(are) unripe.")
+    else:
+        print("The banana(s) is(are) too ripe.")
 
 if __name__ == '__main__':
     banana()
