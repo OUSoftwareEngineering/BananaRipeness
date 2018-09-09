@@ -75,6 +75,7 @@ def banana():
     print("TESTING THIS: " + str(mostColor.red))
     print("TESTING THIS: " + str(mostColor.green))
     print("TESTING THIS: " + str(mostColor.blue))
+    #useless comment
 
 if __name__ == '__main__':
     banana()
