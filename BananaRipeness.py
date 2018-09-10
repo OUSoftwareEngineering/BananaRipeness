@@ -37,25 +37,37 @@ def banana():
     props = response.image_properties_annotation
     #print('Properties:')
 
+    #Placeholder for percent of color seen in a photo
     colorMax = 0
+
+    #Placeholder for the color with the highest percent in a photo
     mostColor = "N/A"
 
+    #Loop through the colors found in a photo
     for color in props.dominant_colors.colors:
+
+        #Get the percentage of the color that is in the photo
         x = color.pixel_fraction
 
+        #Check if the 'main color' is white, ignore it if so
         if color.color.red > 230 and color.color.green > 230 and color.color.blue > 230:
             pass
         elif x > colorMax:
             colorMax = x
             mostColor = color.color
 
+    #Get RGB values
     R = mostColor.red
     G = mostColor.green
     B = mostColor.blue
 
+    #Calculate the HSV value from RGB values
     hsv = colorsys.rgb_to_hsv(R, G, B)
 
+    #Calculate hue
     hue = hsv[0] * 360
+
+    #Calculate value
     value = hsv[2]
 
     if hue > 0 and hue < 65 and value > 65:
