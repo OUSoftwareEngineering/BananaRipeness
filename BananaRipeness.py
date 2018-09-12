@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import filedialog
 from PIL import Image, ImageTk
+import os
 
 def banana(picturePath, app):
     # [START vision_quickstart]
     import io
-    import os
     import colorsys
 
     # Imports the Google Cloud client library
@@ -110,9 +110,12 @@ class Application(Frame):
 
     def openFile(self):
         root = self
-        root.filename = filedialog.askopenfilename(initialdir="C:/Users/ecyrb/PycharmProjects/BananaRipeness/Resources", title="Select file",
+        resources = os.path.join(
+            os.path.dirname(__file__), "Resources")
+        root.filename = filedialog.askopenfilename(initialdir=resources, title="Select file",
                                                    filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
-        banana(root.filename, self)
+        if root.filename:
+            banana(root.filename, self)
 
 if __name__ == '__main__':
     app = Application()
