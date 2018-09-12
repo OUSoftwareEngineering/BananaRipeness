@@ -84,8 +84,15 @@ def banana(picturePath, app):
 def gui(pic, ripeness, app):
     image = Image.open(pic)
     app.picture = ImageTk.PhotoImage(image)
-    app.pic = Label(app, image=app.picture)
-    app.text = Label(app, text=ripeness)
+    if not hasattr(app, 'pic'):
+        app.pic = Label(app, image=app.picture)
+    else:
+        app.pic['image'] = app.picture
+
+    if not hasattr(app, 'text'):
+        app.text = Label(app, text=ripeness)
+    else:
+        app.text['text'] = ripeness
     app.pic.grid()
     app.text.grid()
 
