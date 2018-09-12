@@ -18,7 +18,7 @@ def banana():
     client = vision.ImageAnnotatorClient()
     # [END vision_python_migration_client]
     # The name of the image file to annotate
-    picture = 'Resources/bananaPic.jpg'
+    picture = 'Resources/ripe banana 1.jpg'
     file_name = os.path.join(
         os.path.dirname(__file__), picture)
 
@@ -82,7 +82,7 @@ def banana():
 
 def gui(pic, ripeness):
     frame = Tk()
-    frame.title("Bananalyzer")
+    frame.title("Banana Ripeness")
     image = Image.open(pic)
     picture = ImageTk.PhotoImage(image)
     window1 = Label(frame, image=picture).pack()
