@@ -88,7 +88,6 @@ def gui(pic, ripeness, app):
         app.pic = Label(app, image=app.picture)
     else:
         app.pic['image'] = app.picture
-
     if not hasattr(app, 'text'):
         app.text = Label(app, text=ripeness)
     else:
