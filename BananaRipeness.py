@@ -1,3 +1,6 @@
+from tkinter import *
+from PIL import Image, ImageTk
+
 def banana():
     # [START vision_quickstart]
     import io
@@ -15,9 +18,9 @@ def banana():
     client = vision.ImageAnnotatorClient()
     # [END vision_python_migration_client]
     # The name of the image file to annotate
+    picture = 'Resources/bananaPic.jpg'
     file_name = os.path.join(
-        os.path.dirname(__file__),
-        'Resources/bananaPic.jpg')
+        os.path.dirname(__file__), picture)
 
     # Loads the image into memory
     with io.open(file_name, 'rb') as image_file:
@@ -71,12 +74,20 @@ def banana():
     value = hsv[2]
 
     if hue > 0 and hue < 65 and value > 65:
-        print("The banana(s) is(are) ripe.")
+        gui(picture, "The banana(s) is(are) ripe.")
     elif hue > 65 and hue < 110 and value > 65:
-        print("The banana(s) is(are) unripe.")
+        gui(picture, "The banana(s) is(are) unripe.")
     else:
-        print("The banana(s) is(are) too ripe.")
+        gui(picture, "The banana(s) is(are) too ripe.")
+
+def gui(pic, ripeness):
+    frame = Tk()
+    frame.title("Banana Ripeness")
+    image = Image.open(pic)
+    picture = ImageTk.PhotoImage(image)
+    window1 = Label(frame, image=picture).pack()
+    window2 = Label(frame, text=ripeness).pack()
+    frame.mainloop()
 
 if __name__ == '__main__':
     banana()
-    #ari was here
