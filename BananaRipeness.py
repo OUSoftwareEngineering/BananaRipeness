@@ -82,7 +82,7 @@ def banana():
 
 def gui(pic, ripeness):
     frame = Tk()
-    frame.title("Banana Ripeness")
+    frame.title("Bananalyzer")
     image = Image.open(pic)
     picture = ImageTk.PhotoImage(image)
     window1 = Label(frame, image=picture).pack()
