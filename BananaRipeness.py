@@ -1,10 +1,11 @@
 from tkinter import *
+from tkinter import filedialog
 from PIL import Image, ImageTk
+import os
 
-def banana():
+def banana(picturePath, app):
     # [START vision_quickstart]
     import io
-    import os
     import colorsys
 
     # Imports the Google Cloud client library
@@ -18,7 +19,7 @@ def banana():
     client = vision.ImageAnnotatorClient()
     # [END vision_python_migration_client]
     # The name of the image file to annotate
-    picture = 'Resources/ripe banana 1.jpg'
+    picture = picturePath
     file_name = os.path.join(
         os.path.dirname(__file__), picture)
 
@@ -74,20 +75,49 @@ def banana():
     value = hsv[2]
 
     if hue > 0 and hue < 65 and value > 65:
-        gui(picture, "The banana(s) is(are) ripe.")
+        gui(picture, "The banana(s) is(are) ripe.", app)
     elif hue > 65 and hue < 110 and value > 65:
-        gui(picture, "The banana(s) is(are) unripe.")
+        gui(picture, "The banana(s) is(are) unripe.", app)
     else:
-        gui(picture, "The banana(s) is(are) too ripe.")
+        gui(picture, "The banana(s) is(are) too ripe.", app)
 
-def gui(pic, ripeness):
-    frame = Tk()
-    frame.title("Banana Ripeness")
+def gui(pic, ripeness, app):
     image = Image.open(pic)
-    picture = ImageTk.PhotoImage(image)
-    window1 = Label(frame, image=picture).pack()
-    window2 = Label(frame, text=ripeness).pack()
-    frame.mainloop()
+    app.picture = ImageTk.PhotoImage(image)
+    if not hasattr(app, 'pic'):
+        app.pic = Label(app, image=app.picture)
+    else:
+        app.pic['image'] = app.picture
+
+    if not hasattr(app, 'text'):
+        app.text = Label(app, text=ripeness)
+    else:
+        app.text['text'] = ripeness
+    app.pic.grid()
+    app.text.grid()
+
+
+class Application(Frame):
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.grid()
+        self.createWidgets()
+
+    def createWidgets(self):
+        self.quitButton = Button(self, text='Open Image',
+            command=self.openFile)
+        self.quitButton.grid()
+
+    def openFile(self):
+        root = self
+        resources = os.path.join(
+            os.path.dirname(__file__), "Resources")
+        root.filename = filedialog.askopenfilename(initialdir=resources, title="Select file",
+                                                   filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
+        if root.filename:
+            banana(root.filename, self)
 
 if __name__ == '__main__':
-    banana()
+    app = Application()
+    app.master.title('Bananalyzer')
+    app.mainloop()
